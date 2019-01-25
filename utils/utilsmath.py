@@ -125,6 +125,33 @@ def list_randitem_norep(n,items,removed_values=[]):
     """
     return _list_rand0(n,items,False,removed_values)
 
+#############################################################################
+# Numbers
+#############################################################################
+
+def ans_number(strans,sol):
+    """
+    Analyze an answer of type number
+    """
+    try:
+        ans=sympy_expr(strans)
+        if not isinstance(ans,sp.Number):
+            score=-1
+            numerror=2
+            texterror="Votre réponse n'est pas un nombre valide."
+        elif ans!=sol:
+            score=0
+            numerror=1
+            texterror=""
+        else:
+            score=100
+            numerror=0
+            texterror=""
+    except:
+        score=-1
+        numerror=2
+        texterror="Votre réponse n'est pas un nombre valide."
+    return score,numerror,texterror
 
 #############################################################################
 # Intervals
@@ -211,4 +238,5 @@ def rand_int_matrix_invertible(n,bound):
         M=rand_int_matrix(n,p,bound)
         if M.det()!=0:
             return M
+
 

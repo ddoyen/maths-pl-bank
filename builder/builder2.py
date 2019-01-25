@@ -27,6 +27,15 @@ if __name__ == "__main__":
     with open(input_json, "r") as f:
         dic = json.load(f)
     
+    if 'form_help' in dic:
+        if dic['form_help']!="":
+            dic['form']+="""
+            <details>
+            <summary>Syntaxe attendue.</summary>
+            {}
+            </details>
+            """.format(dic['form_help'])
+    
     if 'builder_main' in dic:
         glob = {}
         dic['StopBeforeExec'] = StopBeforeExec
@@ -53,3 +62,5 @@ if __name__ == "__main__":
         f.write(jsonpickle.encode(dic, unpicklable=False))
     
     sys.exit(0)
+
+

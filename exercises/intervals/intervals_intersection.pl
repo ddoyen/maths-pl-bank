@@ -17,9 +17,12 @@ strsol=str(sol)
 ==
 
 builder_statement ==
-text = r"""On considère les intervalles $% A= {} %$ et $% B={}.%$ Déterminer $% A\cap B%$.""".format(ut.latex(A),ut.latex(B))
+text = """On considère les intervalles $% A= {} %$ et $% B={}.%$ Déterminer $% A\cap B%$.""".format(ut.latex(A),ut.latex(B))
 ==
 
+form_help ==
+Pour désigner l'ensemble vide, écrire &laquo; vide &raquo;.
+==
 
 eval_param ==
 ut.LatexPrinter._settings.update({'interv_rev_brack': True})
@@ -28,7 +31,7 @@ kw_infinity=['infini','inf']
 ==
 
 eval_main==
-sol=ut.sympify(strsol)
+sol=sp.sympify(strsol)
 score,numerror,texterror=ut.ans_interval(response['answer'],sol,kw_empty_set,kw_infinity)
 ==
 
@@ -36,6 +39,8 @@ eval_feedback==
 feedback=texterror
 #""" La réponse correcte est $${}$$.""".format(ut.latex(sol))
 ==
+
+
 
 
 
