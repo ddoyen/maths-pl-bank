@@ -25,6 +25,7 @@ eval_param ==
 ==
 
 eval_main==
+ans=int(response['answer'])
 if sol==ans:
     score=100
 else:
@@ -34,3 +35,4 @@ else:
 eval_feedback==
 
 ==
+
