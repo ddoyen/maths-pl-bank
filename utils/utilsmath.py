@@ -80,6 +80,12 @@ def sympy_expr(s):
     transformations=prs.standard_transformations + (prs.implicit_multiplication_application,prs.convert_xor)
     with sp.evaluate(False):
         return prs.parse_expr(s,transformations=transformations,evaluate=False)
+        
+def is_equal(a, b):
+    """
+    Check if two sympy expressions are equal after simplifications.
+    """
+    return sp.simplify(a-b) == 0
 
 def _list_rand0(n,items,replace,removed_values):
     """
@@ -151,6 +157,54 @@ def ans_number(strans,sol):
         score=-1
         numerror=2
         texterror="Votre réponse n'est pas un nombre valide."
+    return score,numerror,texterror
+
+
+#############################################################################
+# Fractions
+#############################################################################
+
+
+def is_frac(expr):
+    """
+    Check if a sympy expression is a fraction of integers.
+    """
+    f = sp.fraction(expr)
+    return f[0].is_Integer and f[1].is_Integer and f[1]!=0
+
+def is_frac_irred(expr):
+    """
+    Check if a sympy fraction of integers is irreducible.
+    """
+    f = sp.fraction(expr)
+    return sp.gcd(f[0],f[1])==1 and f[1]>0
+    
+def ans_frac(strans,sol):
+    """
+    Analyze an answer of type fraction.
+    """
+    try:
+        ans=sympy_expr(strans)
+        if not is_frac(ans):
+            score=-1
+            numerror=3
+            texterror="Votre réponse n'est pas une fraction d'entiers ou un entier."
+        elif not is_frac_irred(ans):
+            score=0
+            numerror=2
+            texterror="Votre réponse n'est pas une fraction irréductible."
+        elif not is_equal(ans,sol):
+            score=0
+            numerror=1
+            texterror=""
+        else:
+            score=100
+            numerror=0
+            texterror=""
+    except:
+        score=-1
+        numerror=3
+        texterror="Votre réponse n'est pas une fraction d'entiers ou un entier."
     return score,numerror,texterror
 
 #############################################################################
