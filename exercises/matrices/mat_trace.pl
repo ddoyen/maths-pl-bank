@@ -3,36 +3,27 @@ extends = /exercises/templates/basicmath.pl
 title = Trace d'une matrice
 
 builder_param ==
-matsize=2
+matsize=3
 coeffbound=5
 ==
 
 builder_main ==
 A=ut.rand_int_matrix(matsize,matsize,coeffbound)
-==
-
-builder_statement ==
-text = """On considère la matrice 
-    $% A= {} %$
-Calculer la trace de cette matrice
-""".format(ut.latex(A))
 sol=sp.trace(A)
 ==
 
-
-eval_param ==
-
+builder_statement ==
+text = """
+On considère la matrice
+$$ A= {} $$
+Calculer la trace de cette matrice
+""".format(ut.latex(A))
 ==
 
 eval_main==
-ans=int(response['answer'])
-if sol==ans:
-    score=100
-else:
-    score=0
+score,numerror,texterror=ut.ans_number(response['answer'],sol)
+feedback=texterror
 ==
 
-eval_feedback==
 
-==
 
