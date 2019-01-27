@@ -4,9 +4,10 @@ Le module `utilsmath` contient des outils pour faciliter la programmation d'exer
 
 ## Génération aléatoire d'objets mathématiques
 
-Le module `utilsmath` contient de nombreuses fonctions permettant de générer aléatoirement des objets de type sympy :
-- intervalles dont la nature des bornes est aléatoire
+Le module `utilsmath` contient des fonctions permettant de générer aléatoirement des objets de type sympy :
+- nombres complexes à coefficients aléatoies
 - polynômes à coefficients aléatoires
+- intervalles dont la nature des bornes est aléatoire
 - matrices à coefficients aléatoires
 - etc.
 
@@ -35,3 +36,22 @@ code=latex(sp.Interval.Lopen(0, 2))
 Dans un exercice PL, la réponse de l'élève est souvent donnée sous forme d'une chaîne de caractères. Pour analyser une telle réponse une stratégie consiste à :
 - convertir la chaîne en un objet de type `sympy` (Expr, Set, Interval, Poly, Matrix, etc.)
 - effectuer un certain nombre de tests sur cet objet de type `sympy` (égalité avec la solution, forme, etc.)
+
+Le module `utilsmath` contient des fonctions pour analyser les types de réponses les plus courants :
+- nombre
+- fraction
+- nombre complexe
+- nombre complexe sous forme cartésienne
+- polynôme
+- polynôme développé
+- polynôme factorisé
+- intervalle
+- ensemble fini
+- fonction
+- etc.
+
+Toutes ces fonctions d'analyses sont nommées avec le préfixe `ans_` et renvoient leur analyse sous la même forme :
+- un score
+- un numéro d'erreur
+- un texte d'erreur
+
