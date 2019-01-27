@@ -62,16 +62,23 @@ if __name__ == "__main__":
         sys.exit(1)
     score=dic['score']    
     
+    if 'feedback' in dic:
+        feedback2= dic['feedback']
+    
     if score==-1:
-        feedback="<span style='color:blue'>Attention ! </span>"
+        feedback="""<div style='margin-bottom: 15px;padding: 4px 12px;background-color: #e7f3fe;border-left: 6px solid #2196F3;'>
+        <p><strong>Attention !</strong> {} </p>
+        </div>""".format(feedback2)
     elif score==100:
-        feedback="<span style='color:green'>Bonne réponse. </span>"
+        feedback="""<div style='  margin-bottom: 15px;padding: 4px 12px;background-color: #ddffdd;border-left: 6px solid #4CAF50;'>
+        <p><strong>Bonne réponse. </strong> {} </p>
+        </div>""".format(feedback2)
     else:
-        feedback="<span style='color:orange'>Réponse incorrecte. </span>"
-    
-    if dic['feedback']:
-        feedback+= dic['feedback']
-    
+        feedback="""<div style='  margin-bottom: 15px;padding: 4px 12px;background-color: #ffffcc;border-left: 6px solid #ffeb3b;'>
+        <p><strong>Réponse incorrecte. </strong> {} </p>
+        </div>""".format(feedback2)
+
 
     output(score,feedback,dic)
+
 

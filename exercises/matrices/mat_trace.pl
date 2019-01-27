@@ -10,6 +10,7 @@ coeffbound=5
 builder_main ==
 A=ut.rand_int_matrix(matsize,matsize,coeffbound)
 sol=sp.trace(A)
+strsol=str(sol)
 ==
 
 builder_statement ==
@@ -21,9 +22,11 @@ Calculer la trace de cette matrice
 ==
 
 eval_main==
+sol=sp.sympify(strsol)
 score,numerror,texterror=ut.ans_number(response['answer'],sol)
 feedback=texterror
 ==
+
 
 
 

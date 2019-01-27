@@ -8,6 +8,7 @@ from sympy.printing.latex import LatexPrinter as LatexPrinter0
 #############################################################################
 
 class CustomLatexPrinter(LatexPrinter0):
+    printmethod = ""
     
     _default_settings = {
         "order": None,
@@ -24,7 +25,11 @@ class CustomLatexPrinter(LatexPrinter0):
         "symbol_names": {},
         "ln_notation": True,
         "interv_rev_brack": True,
+        "imaginary_unit": "i",
     }
+    
+    def _print_ImaginaryUnit(self, expr):
+        return self._settings["imaginary_unit"]
     
     def _print_Interval(self, i):
         
@@ -61,7 +66,7 @@ def latex(expr):
 # Basic
 #############################################################################
 
-def sympy_expr(s):
+def sympy_expr(s,local_dict={}):
     """
     Convert a string to a sympy expression without mathematical simplifications.
 
@@ -79,8 +84,17 @@ def sympy_expr(s):
     """
     transformations=prs.standard_transformations + (prs.implicit_multiplication_application,prs.convert_xor)
     with sp.evaluate(False):
-        return prs.parse_expr(s,transformations=transformations,evaluate=False)
-        
+        return prs.parse_expr(s,local_dict=local_dict,transformations=transformations,evaluate=False)
+
+def arg_add_flatten(expr):
+    lst=[]
+    for a in expr.args:
+        if a.is_Add:
+            lst=lst+arg_add_denest(a)
+        else:
+            lst.append(a)
+    return lst
+     
 def is_equal(a, b):
     """
     Check if two sympy expressions are equal after simplifications.
@@ -141,7 +155,7 @@ def ans_number(strans,sol):
     """
     try:
         ans=sympy_expr(strans)
-        if not isinstance(ans,sp.Number):
+        if not ans.is_Number:
             score=-1
             numerror=2
             texterror="Votre réponse n'est pas un nombre valide."
@@ -207,6 +221,80 @@ def ans_frac(strans,sol):
         texterror="Votre réponse n'est pas une fraction d'entiers ou un entier."
     return score,numerror,texterror
 
+#############################################################################
+# Complex numbers
+#############################################################################
+
+
+def rand_complex_int(bound):
+    """
+    Generate a random complex number.
+    """
+    a,b=list_randint(2,-bound,bound,[0])
+    return sp.sympify(a+b*sp.I)
+
+def ans_complex(strans,sol,imaginary_unit):
+    """
+    Analyze an answer of type number
+    """
+    try:
+        ans=sympy_expr(strans,{imaginary_unit:sp.I})
+        if not ans.is_complex:
+            score=-1
+            numerror=2
+            texterror="Votre réponse n'est pas un nombre complexe valide."
+        elif not is_equal(ans,sol):
+            score=0
+            numerror=1
+            texterror=""
+        else:
+            score=100
+            numerror=0
+            texterror=""
+    except:
+        score=-1
+        numerror=2
+        texterror="Votre réponse n'est pas un nombre complexe valide."
+    return score,numerror,texterror
+
+def is_complex_cartesian(expr):
+    """
+    Check if a complex number is in cartesian form.
+    """
+    args=arg_add_flatten(expr)
+    nre=sum(a.is_real for a in args)        
+    nim=sum(a.is_imaginary for a in args)
+    m=len(args)-nre-nim
+    return (nre<=1) and (nim<=1) and (m==0)
+    
+def ans_complex_cartesian(strans,sol,imaginary_unit):
+    """
+    Analyze an answer of type complex
+    """
+    try:
+        ans=sympy_expr(strans,{imaginary_unit:sp.I})
+        if not ans.is_complex:
+            score=-1
+            numerror=2
+            texterror="Votre réponse n'est pas un nombre complexe valide."
+        elif not is_complex_cartesian(ans):
+            score=-1
+            numerror=3
+            texterror="Votre réponse n'est pas sous forme cartésienne."
+        elif not is_equal(ans,sol):
+            score=0
+            numerror=1
+            texterror=""
+        else:
+            score=100
+            numerror=0
+            texterror=""
+    except:
+        score=-1
+        numerror=2
+        texterror="Votre réponse n'est pas un nombre complexe valide."
+    return score,numerror,texterror
+    
 #############################################################################
 # Intervals
 #############################################################################
@@ -292,5 +380,6 @@ def rand_int_matrix_invertible(n,bound):
         M=rand_int_matrix(n,p,bound)
         if M.det()!=0:
             return M
+
 
 
