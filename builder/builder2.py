@@ -36,17 +36,13 @@ if __name__ == "__main__":
             </details>
             """.format(dic['form_help'])
     
-    if 'builder_main' in dic:
+    if 'before' in dic:
         glob = {}
         dic['StopBeforeExec'] = StopBeforeExec
         code=""
-        if 'builder_head' in dic:
-            code+=dic['builder_head']
-        if 'builder_param' in dic:
-            code+=dic['builder_param']
-        code+=dic['builder_main']
-        if 'builder_statement' in dic:
-            code+=dic['builder_statement']
+        if 'headbefore' in dic:
+            code+=dic['headbefore']
+        code+=dic['before']
         exec(add_try_clause(code, StopBeforeExec), dic)
         exec("", glob)
         for key in glob:
@@ -62,5 +58,6 @@ if __name__ == "__main__":
         f.write(jsonpickle.encode(dic, unpicklable=False))
     
     sys.exit(0)
+
 
 
