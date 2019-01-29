@@ -1,31 +1,36 @@
 extends = /exercises/templates/basicmath.pl
 
+settings.allow_reroll = true
+
 title = Trace d'une matrice
 
-builder_param ==
-matsize=3
-coeffbound=5
-==
+lang = fr
 
-builder_main ==
-A=ut.rand_int_matrix(matsize,matsize,coeffbound)
+matsize = 3
+
+coeffbound = 5
+
+before ==
+A=ut.rand_int_matrix(int(matsize),int(matsize),int(coeffbound))
 sol=sp.trace(A)
 strsol=str(sol)
+latexA=ut.latex(A)
 ==
 
-builder_statement ==
-text = """
-On considère la matrice
-$$ A= {} $$
-Calculer la trace de cette matrice
-""".format(ut.latex(A))
+text ==
+On considère la matrice $$ A= {{latexA}}. $$ Calculer la trace de cette matrice.
 ==
 
-eval_main==
+evaluator ==
 sol=sp.sympify(strsol)
 score,numerror,texterror=ut.ans_number(response['answer'],sol)
-feedback=texterror
+feedback=fb.msg_analysis(score,texterror,lang)
 ==
+
+
+
+
+
 
 
 

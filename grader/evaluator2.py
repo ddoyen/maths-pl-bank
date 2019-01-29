@@ -37,17 +37,13 @@ if __name__ == "__main__":
     
     dic = get_context()
     dic['response'] = get_answers()
-    if 'eval_main' in dic:
+    if 'evaluator' in dic:
         glob = {}
         dic['StopEvaluatorExec'] = StopEvaluatorExec
         code=""
-        if 'eval_head' in dic:
-            code+=dic['eval_head']
-        if 'eval_param' in dic:
-            code+=dic['eval_param']
-        code+=dic['eval_main']
-        if 'eval_feedback' in dic:
-            code+=dic['eval_feedback']
+        if 'headevaluator' in dic:
+            code+=dic['headevaluator']
+        code+=dic['evaluator']
         exec(add_try_clause(code, StopEvaluatorExec), dic)
         exec("", glob)
         for key in glob:
@@ -63,22 +59,10 @@ if __name__ == "__main__":
     score=dic['score']    
     
     if 'feedback' in dic:
-        feedback2= dic['feedback']
-    
-    if score==-1:
-        feedback="""<div style='margin-bottom: 15px;padding: 4px 12px;background-color: #e7f3fe;border-left: 6px solid #2196F3;'>
-        <p><strong>Attention !</strong> {} </p>
-        </div>""".format(feedback2)
-    elif score==100:
-        feedback="""<div style='  margin-bottom: 15px;padding: 4px 12px;background-color: #ddffdd;border-left: 6px solid #4CAF50;'>
-        <p><strong>Bonne réponse. </strong> {} </p>
-        </div>""".format(feedback2)
-    else:
-        feedback="""<div style='  margin-bottom: 15px;padding: 4px 12px;background-color: #ffffcc;border-left: 6px solid #ffeb3b;'>
-        <p><strong>Réponse incorrecte. </strong> {} </p>
-        </div>""".format(feedback2)
+        feedback= dic['feedback']
 
 
     output(score,feedback,dic)
+
 
 

@@ -2,19 +2,20 @@ extends = /exercises/intervals/intervals_intersection.pl
 
 title = Intersection of intervals
 
-builder_param ==
-ut.LatexPrinter._settings.update({'interv_rev_brack': False})
+lang = en
+
+param = {"interv_rev_brack": False}
+
+text == 
+Consider the $% A= {{latexA}} %$ et $% B={{latexB}}.%$ Déterminer $% A\cap B%$.
 ==
 
-builder_statement ==
-text = r"""Consider the intervals $% A= {} %$ and $% B={}.%$ Find $% A\cap B%$.""".format(ut.latex(A),ut.latex(B))
+evaluator ==
+sol=sp.sympify(strsol)
+score,numerror,texterror=ut.ans_interval(response['answer'],sol,kw_empty_set=['vide'],kw_infinity=['infini','inf'])
+feedback=fb.msg_analysis(score,texterror,lang)
 ==
 
-eval_param ==
-ut.LatexPrinter._settings.update({'interv_rev_brack': False})
-kw_empty_set=['empty']
-kw_infinity=['infty','inf','infinity']
-==
 
 
 

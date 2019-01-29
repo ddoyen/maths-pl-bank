@@ -1,24 +1,22 @@
 @ /utils/sandboxio.py
 @ /utils/plrandom.py [plrandom.py]
 @ /utils/utilsmath.py [utilsmath.py]
+@ /utils/prettyfb.py [prettyfb.py]
 @ /builder/builder2.py [builder.py]
 @ /grader/evaluator2.py [grader.py]
 
 title = Title
 
-builder_head ==
+headbefore ==
 from plrandom import rd
 rd.seed(seed)
 import sympy as sp
 import utilsmath as ut
+if 'param' in locals():
+    ut.LatexPrinter._settings.update(eval(param))
 ==
 
-builder_main ==
-pass
-==
-
-builder_statement ==
-text = "Statement"
+before ==
 ==
 
 form==
@@ -27,18 +25,19 @@ form==
 </div>
 ==
 
-eval_head==
+
+
+headevaluator ==
 import sympy as sp
 import utilsmath as ut
+import prettyfb as fb
+if 'param' in locals():
+    ut.LatexPrinter._settings.update(eval(param))
 ==
 
-eval_param ==
-pass
+evaluator ==
 ==
 
-eval_main==
-score=100
-==
 
-eval_feedback==
-==
+
+

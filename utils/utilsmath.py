@@ -20,7 +20,7 @@ class CustomLatexPrinter(LatexPrinter0):
         "long_frac_ratio": None,
         "mul_symbol": None,
         "inv_trig_style": "abbreviated",
-        "mat_str": None,
+        "mat_str": "pmatrix",
         "mat_delim": "[",
         "symbol_names": {},
         "ln_notation": True,
@@ -56,6 +56,27 @@ class CustomLatexPrinter(LatexPrinter0):
             return r"\left%s%s, %s\right%s" % \
                     (left, self._print(i.start), self._print(i.end), right)
 
+    def _print_MatrixBase(self, expr):
+        lines = []
+
+        for line in range(expr.rows):  # horrible, should be 'rows'
+            lines.append(" & ".join([ self._print(i) for i in expr[line, :] ]))
+
+        mat_str = self._settings['mat_str']
+        if mat_str is None:
+            if self._settings['mode'] == 'inline':
+                mat_str = 'smallmatrix'
+            else:
+                if (expr.cols <= 10) is True:
+                    mat_str = 'matrix'
+                else:
+                    mat_str = 'array'
+
+        out_str = r'\begin{%MATSTR%}%s\end{%MATSTR%}'
+        out_str = out_str.replace('%MATSTR%', mat_str)
+        if mat_str == 'array':
+            out_str = out_str.replace('%s', '{' + 'c'*expr.cols + '}%s')
+        return out_str % r"\\\\".join(lines)
 
 LatexPrinter=CustomLatexPrinter()
 
@@ -380,6 +401,7 @@ def rand_int_matrix_invertible(n,bound):
         M=rand_int_matrix(n,p,bound)
         if M.det()!=0:
             return M
+
 
 
 
