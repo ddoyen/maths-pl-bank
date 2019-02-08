@@ -1,4 +1,4 @@
-@ /utils/sandboxio.py
+@ lib:/utils/sandboxio.py
 @ /utils/plrandom.py [plrandom.py]
 @ /utils/utilsmath.py [utilsmath.py]
 @ /utils/prettyfb.py [prettyfb.py]
@@ -28,7 +28,7 @@ for _namevar in list(locals().keys()):
 
 form==
 <div class="input-group">
-<input id="form_answer" type="text" class="form-control" value="{{ answers__.answer }}" required/>
+<input id="form_1" type="text" class="form-control" value="{{ answers__.1 }}" required/>
 </div>
 ==
 
