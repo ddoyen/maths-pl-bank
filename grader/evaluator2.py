@@ -36,13 +36,13 @@ if __name__ == "__main__":
         sys.exit(1)
     
     dic = get_context()
-    dic['response'] = get_answers()
+    dic['answer'] = get_answers()
     if 'evaluator' in dic:
         glob = {}
         dic['StopEvaluatorExec'] = StopEvaluatorExec
         code=""
         if 'headevaluator' in dic:
-            code+=dic['headevaluator']
+            code+=dic['headevaluator']+'\n'
         code+=dic['evaluator']
         exec(add_try_clause(code, StopEvaluatorExec), dic)
         exec("", glob)
@@ -63,6 +63,8 @@ if __name__ == "__main__":
 
 
     output(score,feedback,dic)
+
+
 
 
 
