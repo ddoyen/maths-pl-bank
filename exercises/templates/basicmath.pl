@@ -13,7 +13,7 @@ rd.seed(seed)
 import sympy as sp
 import utilsmath as ut
 if 'latexparam' in locals():
-    ut.LatexPrinter._settings.update(eval(param))
+    ut.LatexPrinter._settings.update(eval(latexparam))
 ==
 
 before ==
@@ -39,7 +39,7 @@ import sympy as sp
 import utilsmath as ut
 import prettyfb as fb
 if 'latexparam' in locals():
-    ut.LatexPrinter._settings.update(eval(param))
+    ut.LatexPrinter._settings.update(eval(latexparam))
 for _namevar in list(_strsympyvar.keys()):
     with sp.evaluate(False):
         locals()[_namevar]=sp.sympify(_strsympyvar[_namevar])
