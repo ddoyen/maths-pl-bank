@@ -1,4 +1,4 @@
-# mathexpr
+# Modèle `mathexpr`
 
 ## Résumé
 
@@ -26,22 +26,29 @@ Définit les couches du clavier virtuel attaché au champ de réponse.
 
 Script Python exécuté avant l'affichage de l'exercice. 
 
-Un certain nombre de modules et objets sont chargés par défaut :
-- une instance de générateur aléatoire
-- le module sympy
-- le module utilsmaths
+Un certain nombre de classes et de fonctions sont chargées par défaut :
+- les principales classes et fonctions du module de calcul symbolique SymPy (https://docs.sympy.org) ;
+- des fonctions de génération aléatoire d'objets SymPy ;
+- une fonction de conversion des objets SymPy en LateX.
 
 ```
 before ==
-A=ut.rand_int_matrix(3,3,5)
-sol=sp.trace(A)
-latexA=ut.latex(A)
+A=rand_int_matrix(3,3,5)
+sol=trace(A)
+latexA=latex(A)
 ==
 ```
 
 `evaluator`
 
-Script Python exécuté après chaque validation de la réponse. 
+Script Python exécuté après chaque validation de la réponse.
+
+Un certain nombre de classes et de fonctions sont chargées par défaut :
+- les principales classes et fonctions du module de calcul symbolique SymPy (https://docs.sympy.org) ;
+- des fonctions de génération aléatoire d'objets SymPy ;
+- une fonction de conversion des objets SymPy en LateX ;
+- des fonctions d'analyse des réponses.
+
 
 ## Exemples
 
@@ -58,11 +65,11 @@ virtualKeyboards = elementary
 
 before ==
 lst=[[2,1],[3,1],[4,1],[5,1],[6,1],[7,1],[8,1],[9,1],[3,2],[4,3],[5,4],[5,3],[5,2],[6,5],[7,6],[7,5],[7,4],[7,3],[7,2],[8,7],[8,5],[8,3]]
-f=rd.choice(lst)
+f=randitem(lst)
 rd.shuffle(f)
-c=rd.choice([2,3,4,5,6])
+c=randint(2,6)
 a,b=c*f[0],c*f[1]
-sol=sp.Rational(a,b)
+sol=Rational(a,b)
 ==
 
 text ==
@@ -70,7 +77,7 @@ Simplifier la fraction $%\displaystyle \frac{ {{a}} }{ {{b}} }%$ en l'écrivant 
 ==
 
 evaluator==
-score,_,texterror=ut.ans_frac(answer['1'],sol)
+score,_,texterror=ans_frac(answer['1'],sol)
 feedback=fb.msg_analysis(score,texterror,lang)
 ==
 ```
