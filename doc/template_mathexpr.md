@@ -29,7 +29,7 @@ Script Python exécuté avant l'affichage de l'exercice.
 Un certain nombre de classes et de fonctions sont chargées par défaut :
 - les principales classes et fonctions du module de calcul symbolique SymPy (https://docs.sympy.org) ;
 - des fonctions de génération aléatoire d'objets SymPy ;
-- une fonction de conversion des objets SymPy en LateX.
+- des fonctions de conversion des objets SymPy en LateX.
 
 ```
 before ==
@@ -38,6 +38,10 @@ sol=trace(A)
 latexA=latex(A)
 ==
 ```
+
+`text`
+
+Enoncé de l'exercice.
 
 `evaluator`
 
