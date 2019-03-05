@@ -5,6 +5,32 @@ import sys, json, jsonpickle, time
 
 from sandboxio import output, get_context, get_answers
 
+def format_analysis(score,text,lang):
+    if lang=='en':
+        warning="Warning !"
+        goodans="Good answer."
+        badans="Bad answer."
+    if lang=='fr':
+        warning="Attention !"
+        goodans="Bonne réponse."
+        badans="Mauvaise réponse."    
+    if score==-1:
+        color1='#e7f3fe'
+        color2='#2196F3'
+        msg=warning
+    elif score==100:
+        color1='#ddffdd'
+        color2='#4CAF50'
+        msg=goodans
+    else:
+        color1='#ffffcc'
+        color2='#ffeb3b'
+        msg=badans
+    format_text="""<div style='margin-bottom: 15px;padding: 4px 12px;background-color: {};border-left: 6px solid {}'>
+            <p><strong>{}</strong> {} </p>
+            </div>""".format(color1,color2,msg,text)
+    return format_text
+
 
 class StopEvaluatorExec(Exception):
     pass
@@ -16,17 +42,15 @@ def add_try_clause(code, excpt):
     return ("try:\n" + '\n'.join(["    " + line for line in code.split('\n')])
             + "\nexcept " + excpt.__name__ + ":\n    pass")
 
-
-missing_evaluator_main_stderr = """\
-The key 'evaluator_main' was not found in the context.
+missing_evaluator_stderr = """\
+The key 'evaluator' was not found in the context.
 When using this grader, the PL must declare a script inside a key 'evaluator'. This script have
-access to every variable declared in the PL and its 'before' script.
-It should declare a variable 'grade' which should contain a tuple (int, feedback) where int is the grade between [0, 100]."""
+access to every variable declared in the PL and its 'before' script."""
 
 missing_score_stderr = """\
 'evaluator' did not declare the variable 'score'.
 The script have access to every variable declared in the PL and its 'before' script.
-It should declare a variable 'grade' which should contain a tuple (int, feedback) where int is the grade between [0, 100]."""
+It should declare a variable 'score' which should contain an integer between [0, 100]."""
 
 if __name__ == "__main__":
     if len(sys.argv) < 5:
@@ -52,17 +76,29 @@ if __name__ == "__main__":
     else:
         print(missing_evaluator_stderr, file=sys.stderr)
         sys.exit(1)
-    
-    if 'score' not in dic:
-        print(missing_grade_stderr, file=sys.stderr)
+
+    if 'score' in dic:
+        score=dic['score']    
+    else:
+        print(missing_score_stderr, file=sys.stderr)
         sys.exit(1)
-    score=dic['score']    
     
     if 'feedback' in dic:
         feedback= dic['feedback']
+    else:
+        feedback=""
+
+    if 'lang' in dic:
+        lang= dic['lang']
+    else:
+        lang="fr"
+
+    format_feedback=format_analysis(score,feedback,lang)  
+
+    output(score,format_feedback,dic)
 
 
-    output(score,feedback,dic)
+
 
 
 
