@@ -27,14 +27,21 @@ if __name__ == "__main__":
     with open(input_json, "r") as f:
         dic = json.load(f)
     
-    if 'form_help' in dic:
-        if dic['form_help']!="":
-            dic['form']+="""
-            <details>
-            <summary>Syntaxe attendue.</summary>
+    dic['attempt']=0
+    
+    if 'style' in dic:
+        dic['form']+="""
+            <style>
             {}
-            </details>
-            """.format(dic['form_help'])
+            </style>
+            """.format(dic['style'])
+
+    if 'script' in dic:
+        dic['form']+="""
+            <script>
+            {}
+            </script>
+            """.format(dic['script'])
     
     if 'before' in dic:
         glob = {}
@@ -51,7 +58,7 @@ if __name__ == "__main__":
             if key in dic and dic[key] == glob[key]:
                 del dic[key]
     else:
-        print(("Builder 'before' need a script declared in the key 'builder_main'. "
+        print(("Builder 'before2' need a script declared in the key 'before'. "
                + "See documentation related to this builder."),
               file = sys.stderr)
         sys.exit(1)
@@ -60,7 +67,6 @@ if __name__ == "__main__":
         f.write(jsonpickle.encode(dic, unpicklable=False))
     
     sys.exit(0)
-
 
 
 
