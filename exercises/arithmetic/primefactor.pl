@@ -1,4 +1,4 @@
-extends = /template/mathexpr.pl
+extends = /template/mathexpr2.pl
 
 title = Décomposition en facteurs premiers
 
@@ -22,6 +22,12 @@ while True:
     dicfactors=factorint(n)
     if sum(list(dicfactors.values()))>2:
         break
+mathexpr_tags = [{'name':'1'},{'name':'2'}]
+==
+
+form ==
+{{input_mathexpr_1}}
+{{input_mathexpr_2}}
 ==
 
 evaluator==
@@ -63,3 +69,4 @@ except:
     score=-1
     feedback=textError['1']
 ==
+

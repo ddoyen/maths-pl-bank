@@ -2,5 +2,6 @@ title = demo
 
 introduction = demo
 
-@ /exercises/matrices/mat_trace.pl
+@ /exercises/arithmetic/prime_factor.pl
+
 

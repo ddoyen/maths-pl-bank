@@ -10,10 +10,10 @@ before ==
 from sympy.ntheory.factor_ import core
 p,b=1,1
 while (b==p) or (b==1):
-    p=ut.randint(50,300)
+    p=randint(50,300)
     b=core(p)
-a=int(sp.sqrt(p/b))
-sol=a*sp.sqrt(b)
+a=int(sqrt(p/b))
+sol=a*sqrt(b)
 ==
 
 text ==
@@ -21,10 +21,13 @@ Ecrire $% \sqrt{ {{p}} }%$ sous la forme  $% a \sqrt{b}%$, où $%a%$ est un enti
 ==
 
 evaluator==
-ans=ut.sympy_expr(answer['1'])
+ans=str2expr(answer['1'])
 if type(ans)==sp.Mul and set(sol.args)==set(ans.args):
     score=100
 else:
     score=0
-feedback=fb.msg_analysis(score,"",lang)  
+feedback="" 
 ==
+
+
+

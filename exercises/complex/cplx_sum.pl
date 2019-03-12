@@ -1,27 +1,23 @@
-extends = /exercises/templates/basicmath.pl
+extends = /template/mathexpr.pl
 
 title = Somme de deux nombres complexes
 
-lang=fr
+lang = fr
 
-imaginary_unit='i'
+imaginary_unit = i
 
 before ==
-z1=ut.rand_complex_int(5)
-z2=ut.rand_complex_int(5)
+z1=rand_complex_int(5)
+z2=rand_complex_int(5)
 sol=z1+z2
-strsol=str(sol)
-latexz1=ut.latex(z1)
-latexz2=ut.latex(z2)
+latexz1=latex(z1)
+latexz2=latex(z2)
 ==
 
 text = On considère les nombres complexes $% z_1= {{latexz1}} %$ et $% z_2= {{latexz2}} %$. Calculer $% z_1+z_2 %$.
 
 evaluator==
-sol=sp.sympify(strsol)
-score,numerror,texterror=ut.ans_complex_cartesian(response['answer'],sol,imaginary_unit)
+score,numerror,texterror=ans_complex_cartesian(answer['1'],sol,imaginary_unit)
 feedback=fb.msg_analysis(score,texterror,lang)
 ==
-
-
 

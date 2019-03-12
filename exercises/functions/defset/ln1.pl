@@ -7,11 +7,11 @@ lang = fr
 virtualKeyboards = sets
 
 before ==
-a=ut.randint(-6,6,removed_values=[0,1,-1])
-b=ut.randint(-6,6,removed_values=[0])
-x=sp.symbols('x')
-f=sp.ln(a*x+b)
-latexf=ut.latex(f)
+a=randint(-6,6,[0,1,-1])
+b=randint(-6,6,[0])
+x=symbols('x')
+f=ln(a*x+b)
+latexf=latex(f)
 from sympy.solvers.inequalities import solve_univariate_inequality
 sol = solve_univariate_inequality(a*x+b > 0, x, relational=False)
 ==
@@ -21,7 +21,5 @@ Déterminer l'ensemble de définition de la fonction $%f : x \mapsto {{latexf}}%
 ==
 
 evaluator==
-score,_,texterror=ut.ans_interval(answer['1'],sol)
-feedback=fb.msg_analysis(score,texterror,lang)
+score,_,feedback=ans_interval(answer['1'],sol)
 ==
-

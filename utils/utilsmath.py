@@ -113,12 +113,13 @@ def str2expr(s,local_dict={}):
 
     pattern = re.compile(r'\\frac\s*{(.*)}{(.*)}')
     s = pattern.sub(r"(\1)/(\2)", s)
+    s=s.replace("\\times", "*")
     s=s.replace("\left", "")
     s=s.replace("\right", "")
     s=s.replace('\\',"")
     s=s.replace("{", "(")
     s=s.replace("}", ")")
-
+    
     transformations=prs.standard_transformations + (prs.implicit_multiplication_application,prs.convert_xor)
     with sp.evaluate(False):
         return prs.parse_expr(s,local_dict=local_dict,transformations=transformations,evaluate=False)
@@ -494,4 +495,5 @@ def ans_interval(strans,sol):
         numerror=2
         texterror="Votre réponse n'est pas un ensemble valide."
     return score,numerror,texterror
+
 

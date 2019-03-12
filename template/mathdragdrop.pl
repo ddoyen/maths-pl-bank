@@ -1,54 +1,57 @@
 extends = /template/mathbasic.pl
 
+html_drop_tag =@ /inclusion_tags/drop_tag.html
+html_drag_tag =@ /inclusion_tags/drag_tag.html
+
+
 footerbefore ==
+from jinja2 import Template
+
 _strsympyvar={}
 for _namevar in list(locals().keys()):
     if isinstance(locals()[_namevar],(Basic,Matrix)):
         _strsympyvar[_namevar]=str(locals()[_namevar])
 
-def toy_render_template(html_string, dic):
-	for key in dic:
-		html_string = html_string.replace('{{ '+ key +' }}', dic[key])
-	return html_string
 
-html_drop_element =  """
-    <div class = 'target'
-		id = '{{ name }}'
-		ondrop="drop(event, '{{ name }}')"
-		ondragover='allowDrop(event)'
-		style ='{{ style }}'>
-		<span ondrop="drop(event, '{{ name }}')" ondragover='allowDrop(event)'> 
-			{{ display }} 
-		</span> 
-	</div>
-"""
-html_drag_element =  """
-    <div class = 'source'
-		id = 'drag_{{ name }}'
-		ondrop="drop(event, 'drag_{{ name }}')"
-		ondragover='allowDrop(event)'
-		style = '{{ style }}'>
-		<div class = 'drag-display' id='display_{{ name }}' draggable='true' ondragstart='drag(event)'> 
-			{{ display }} 
-		</div>
-	</div>
-	<input type=hidden  id='form_drag_{{ name }}'>
-"""
+def render_drop_tag(dic):
+	context = {'name':dic['name']}
+	if 'style' in dic:
+	    context['style'] = dic['style']
+	else: 
+		context['style'] = ''
+	if 'display' in dic:
+	    context['display'] = dic['display']
+	else: 
+		context['display'] = ''
+    return Template(html_drop_tag).render(context)
+
+def render_drag_tag(dic):
+	context = {'name':dic['name']}
+	if 'style' in dic:
+	    context['style'] = dic['style']
+	else: 
+		context['style'] = ''
+	if 'display' in dic:
+	    context['display'] = dic['display']
+	else: 
+		context['display'] = ''
+    return Template(html_drag_tag).render(context)
 
 try:
   drop_tags
 except NameError:
-	drop_elements = []
+	pass
 else:
-    drop_elements = [toy_render_template(html_drop_element, tag) for tag in drop_tags]
-
+	for tag in drop_tags:
+    	locals()['input_drop_'+tag['name']] = render_drop_tag(tag)
 
 try:
   drag_tags
 except NameError:
-  drag_elements = []
+	pass
 else:
-  drag_elements = [toy_render_template(html_drag_element, tag) for tag in drag_tags]
+	for tag in drag_tags:
+    	locals()['input_drag_'+tag['name']] = render_drag_tag(tag)
 ==
 
 
@@ -98,15 +101,15 @@ script==
 	function drag(ev) {
 	    ev.dataTransfer.setData("text", ev.target.id);
 	}
-	function drop(ev, target) { // target est l'id de la source du drop{
+	function drop(ev, target) { // target est l'id de la cible du drop "drop_name" ou "drag_container_name"
 		ev.preventDefault();
 
 		if (!ev.target.getAttribute("ondrop")) return false;
-		// data est l'id de la cible du drop
+		// data est l'id de l'élément qu'on drag "drag_name"
 		var data=ev.dataTransfer.getData("text");
 		// Le drop
 		document.getElementById(target).appendChild(document.getElementById(data));
-		var input_ajax=document.getElementById('form_drag_' + data.substring(8));// on enlève le "display_" du nom 
+		var input_ajax=document.getElementById('form_' + data);// on cherche le champ 'form_drag_name'
 		if (target != undefined) input_ajax.value = target;
 		if (target == undefined) input_ajax.value = '';
 	}
@@ -115,6 +118,10 @@ script==
 text==
 
 ==
+
+
+
+
 
 
 

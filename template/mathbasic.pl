@@ -10,6 +10,7 @@ headbefore ==
 from plrandom import rd
 rd.seed(seed)
 from sympy import sqrt,ln,log,exp,sin,cos,tan
+from sympy import isprime,factorint
 from sympy import Intersection
 from sympy import symbols
 from sympy import conjugate
@@ -34,6 +35,7 @@ headevaluator ==
 from sympy import Basic, Matrix
 from sympy import sympify
 from sympy import ln, sqrt
+from sympy import isprime
 from sympy import trace
 from sympy import evaluate
 from utilsmath import *
@@ -45,6 +47,7 @@ for _namevar in list(_strsympyvar.keys()):
 ==
 
 evaluator =
+
 
 
 
