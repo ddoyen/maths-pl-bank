@@ -76,7 +76,7 @@ The resizable-matrix fields need to be declared in the  `before` tag of `exercis
 before==
 resizable_matrix_tags = [
 {
-    'name':'matrice',
+    'name':'A',
     'max_rows':5,
     'max_cols':5,
     'cell_width':'3em',
@@ -95,12 +95,13 @@ In our implementation of resizable matrices:
   - The field `input_style` is used to provide a list of `css` properties for the input field, whose dimensions should of course be smaller than those of the cell. These properties can be used to specify size, color, text style, etc... It defaults to the empty string.
   - For now a initial array of values may not be provided for the matrix. 
   - The values entered by the user in the input fields of the matrix with name `name` are returned in `answer['resizable_matrix_name']`. This is a python double list whose entries are thus accessed as `answer['resizable_matrix_name'][i][j]`, moreover indices run from 0, not 1. Each entry is a string, which therefore should be converted to be evaluated, if the expected input is an integer or sympy expression for instance. 
-  named `othername` holds as value the string `'drop_othername'`.
   - Resizable matrix elements are inserted in the `form` tag of `exercise.pl` as in the example below.
   
 ~~~~
 text==
 Enter a 4 by 4 antisymmetric matrix $% A %$ with determinant equal to 1 below. 
+==
+
 form==
 <div style="text-align:center">
 $% A =%$  {{ input_resizable_matrix_A | safe }}
