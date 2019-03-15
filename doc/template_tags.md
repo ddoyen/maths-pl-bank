@@ -1,6 +1,21 @@
-*This document describes various so-called `template tags`  one may use in a `pl` math exercise, and the way they work from the point of view of one who writes the exercise. These `template tags` allow to insert complex `html` content in the `form` or `text` tag of the exercise.*
+*This document describes various so-called `template tags`  one may use in a `pl` math exercise, and the way they work from the point of view of one who writes the exercise. These `template tags` allow to insert complex `html` content in the `form` or `text` tag of the exercise in a simple way, much like a `LaTeX` macro for instance.*
 
 `exercise.pl`refers to the file of the exercise being written.
+
+Useful links :
+ - `emojis` to copy-paste for use in `html` strings or templates : https://coolsymbol.com/emojis/emoji-for-copy-and-paste.html
+
+ - `css`style properties : https://www.w3schools.com/cssref/
+ 
+ - `html color` names : https://www.w3schools.com/colors/colors_names.asp
+
+ - `JSX graph` : https://jsxgraph.uni-bayreuth.de/wp/index.html
+ 
+ - `sympy` in general (and matrices in particular) : https://docs.sympy.org/latest/tutorial/index.html
+ 
+ - `sympy plot` : https://docs.sympy.org/latest/tutorial/index.html
+ 
+
 
 # Drag and drop fields
 
@@ -17,9 +32,10 @@ before==
 style = 'width: 3em; height: 2em'
 
 drag_tags = [
-    {'name':'papa', 'display':'$$\in$$', 'style': style},
-    {'name':'maman', 'display':'$$\subset$$', 'style':style},
+    {'name':'papa', 'display':'Papa', 'style': style},
+    {'name':'maman', 'display':'Maman', 'style':style},
     {'name':'smiley', 'display':'😍', 'style':style}
+    {'name':'integral', 'display':'$$\int_a^b f(x)\,dx$$', 'style':style}
 ]
 drop_tags = [
   {'name':'papa', 'display':'אבא', 'style':style}, 
@@ -64,7 +80,7 @@ else :
 
 # Fixed size matrix input fields
 
-They require the template `mathrfixedmatrix.pl` to be loaded, the first line of `exercise.pl` should thus be 
+They require the template `mathfixedmatrix.pl` to be loaded, the first line of `exercise.pl` should thus be 
 
 ~~~~
 extends = /template/mathfixedmatrix.pl
@@ -173,7 +189,7 @@ In our implementation of resizable matrices:
   - The fields `max_rows` and `max_cols` specify to which dimensions the matrix is allowed to grow. The value of `max_rows` defaults to 5, while the value of `max_cols` defaults to that of `max_rows` if the latter is specified, and 5 otherwise.
   - The fields `cell_width` and `cell_height` hold the dimensions of each cell of the matrix. They default to reasonable values if they are not specified.
   - The field `input_style` is used to provide a list of `css` properties for the input field, whose dimensions should of course be smaller than those of the cell. These properties can be used to specify size, color, text style, etc... It defaults to the empty string.
-  - For now a initial array of values may not be provided for the matrix. 
+  - For now an initial array of values may not be provided for the matrix. 
   - The values entered by the user in the input fields of the matrix with name `name` are returned in `answer['resizable_matrix_name']`. This is a python double list whose entries are thus accessed as `answer['resizable_matrix_name'][i][j]`, moreover indices run from 0, not 1. Each entry is a string, which therefore should be converted to be evaluated, if the expected input is an integer or sympy expression for instance. 
   - Resizable matrix elements are inserted in the `form` tag of `exercise.pl` as in the example below.
   
@@ -208,7 +224,7 @@ for i in range(m):
         A[i][j] = sympify(A[i][j])
 A = Matrix(A)
 
-if m != n : 
+if (m != 4) or (n != 4) : 
     score = 0
     numerror = 1
 elif A != A.T:
@@ -233,7 +249,7 @@ Moreover, the plots are generated using the `sympy.plot` package, hence the `bef
 from sympy.plotting import plot
 ~~~~
 
-Unlike the other template tags, the template tags for plots are automaticaly generated from sympy plots. They are not designed to return some user input, only to display a plot. For instance, assume the `before`tag of `exercise.pl` looks like this:
+Unlike the other template tags, the template tags for plots are automaticaly generated from sympy plots. They are not designed to return  user input, only to display a plot. For instance, assume the `before`tag of `exercise.pl` looks like this:
 ~~~~
 before==
 from sympy.plotting import plot
@@ -295,6 +311,9 @@ They require the template `mathjsxgraph.pl` to be loaded, the first line of `exe
 ~~~~
 extends = /template/mathjsxgraph.pl
 ~~~~
+
+`JSXGraph` is a javascript-based library for dynamical geometry, i.e. geometrical constructions which can be modified by the user through interaction with his mouse or trackpad. 
+
 
 Moreover, the plots are generated using the `sympy.plot` package, hence the `before`tag of `exercise.pl` should contain the line 
 ~~~~
