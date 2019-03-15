@@ -2,7 +2,7 @@
 
 `exercise.pl`refers to the file of the exercise being written.
 
-# Drag and drop type fields
+# Drag and drop fields
 
 They require the template `mathdragdrop.pl` to be loaded, the first line of `exercise.pl` should thus be 
 
@@ -56,6 +56,86 @@ if (answer['drag_maman'] == 'drop_maman') and  (answer['drag_papa'] == 'drop_pap
     score = 100
     numerror = 0
 else : 
+    score = 0
+    numerror = 1
+==
+~~~~
+
+
+# Fixed size matrix input fields
+
+They require the template `mathrfixedmatrix.pl` to be loaded, the first line of `exercise.pl` should thus be 
+
+~~~~
+extends = /template/mathfixedmatrix.pl
+~~~~
+
+The fixed-size fields need to be declared in the  `before` tag of `exercise.pl` in a list named `fixed_matrix_tags` as in the following example, where the list holds a single tag description:
+
+~~~~
+before==
+A = [[1,1,1],[0,0,0], [2,3,4]]
+B = [[True, True, True], [False,False,False], [False,False,False]]
+
+fixed_matrix_tags = [{
+    'name':'M',
+    'num_rows': 3,  
+    'num_cols': 3,  
+    'cell_width':'3em',
+    'cell_height':'2em',
+    'input_style':'width:2em',
+    'matrix': A,
+    'mask': B
+}] 
+==
+~~~~
+
+Resizable matrices are web page elements  consisting  of an array of `html` input fields surrounded by brackets. 
+
+In our implementation of resizable matrices:
+  - The size of the matrix is given by the fields `num_rows` and `num_cols`. The value of `num_rows` defaults to 2, while the value of `num_cols` defaults to that of `num_rows` if the latter is specified, and 2 otherwise.
+  - The fields `cell_width` and `cell_height` hold the dimensions of each cell of the matrix. They default to reasonable values if they are not specified.
+  - The field `input_style` is used to provide a list of `css` properties for the input field, whose dimensions should of course be smaller than those of the cell. These properties can be used to specify size, color, text style, etc... It defaults to the empty string.
+  - The field `matrix` allows to provide an array of initial values for the input fields. It defaults to initially empty input fields.
+  - The field `mask` is an array of booleans, which allows to specify which input fields in the matrix are active, as one may wish the user to enter not all the entries of the matrix but only some of them. It defaults to input fields which are all active.
+ - The values entered by the user in the input fields of the matrix with name `name` are returned in `answer['fixed_matrix_name']`. This is a python double list whose entries are thus accessed as `answer['resizable_matrix_name'][i][j]`, moreover indices run from 0, not 1. Each entry is a string, which therefore should be converted to be evaluated, if the expected input is an integer or sympy expression for instance. 
+  - Fixed matrix elements are inserted in the `form` tag of `exercise.pl` as in the example below.
+  
+~~~~
+text==
+Modify the first line of the matrix $% M %$ below so that its determinant is equal to one.
+==
+
+form==
+<div style="text-align:center">
+$% M =%$  {{ input_fixed_matrix_M | safe }}
+</div>
+==
+~~~~  
+
+The  `safe` filter for the tags is needed to prevent escaping of `html` content, as people familiar with  `jinja2` templates know.
+
+Then an evaluator for `exercise.pl` could be as follows:
+
+~~~~
+evaluator ==
+M = answer['resizable_matrix_A']
+
+score = 100
+numerror = 0
+
+m = len(M)
+n = len(M[0])
+
+for i in range(m):
+    for j in range(n):
+        M[i][j] = sympify(M[i][j])
+M = Matrix(M)
+
+if m != n : 
+    score = 0
+    numerror = 1
+elif M.det() != 1:
     score = 0
     numerror = 1
 ==
@@ -131,7 +211,7 @@ A = Matrix(A)
 if m != n : 
     score = 0
     numerror = 1
-elif A != M.T:
+elif A != A.T:
     score = 0
     numerror = 1
 elif A.det() != 1:
