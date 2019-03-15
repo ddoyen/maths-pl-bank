@@ -219,3 +219,138 @@ elif A.det() != 1:
     numerror = 1
 ==
 ~~~~
+
+# Function plot fields
+
+They require the template `mathplotlib.pl` to be loaded, the first line of `exercise.pl` should thus be 
+
+~~~~
+extends = /template/mathplotlib.pl
+~~~~
+
+Moreover, the plots are generated using the `sympy.plot` package, hence the `before`tag of `exercise.pl` should contain the line 
+~~~~
+from sympy.plotting import plot
+~~~~
+
+Unlike the other template tags, the template tags for plots are automaticaly generated from sympy plots. They are not designed to return some user input, only to display a plot. For instance, assume the `before`tag of `exercise.pl` looks like this:
+~~~~
+before==
+from sympy.plotting import plot
+x = symbols('x')
+graph_1 = plot(x**2,(x,-2, 2))
+graph_2 = plot(sin(x),(x,-2, 2))
+==
+~~~~
+
+then the plots can be inserted in the tags `text`or `form` of `exercise.pl`as follows
+~~~~
+text== 
+which of these function plot do you find prettier ?
+<br>
+<span style="width:300px;">{{ graphe_1 | safe }}</span>
+<span style="width:300px;">{{ graphe_2 | safe }}</span>
+== 
+~~~~
+
+Another possible use of plots is as the `display` field of a drag element. Such a field may be any `html` content, but cannot be a template. Therefore we provide a function which returns the `html`string corresponding to the plot, namely `render_plot(arg)`, where `arg`is a plot. An example is the following equivalent of the above example
+
+~~~~
+before==
+from sympy.plotting import plot
+x = symbols('x')
+graph_1 = plot(x**2,(x,-2, 2))
+graph_2 = plot(sin(x),(x,-2, 2))
+
+html_graph_1 = render_plot(graph_1)
+html_graph_2 = render_plot(graph_2)
+
+style = 'width: 300px; height: 200px'
+
+drag_tags = [
+    {'name':'graph_1', 'display':html_graph_1, 'style': style},
+    {'name':'graph_2', 'display':html_graph_2, 'style': style}
+]
+drop_tags = [
+  {'name':'here', 'display':'drop here', 'style':style}
+]
+==
+
+text== 
+Drop the function plot you find prettier in the designated area.
+
+Function plots:
+<br>
+{{ input_drag_graph_1 }} {{ input_drag_graph_2 }}
+<br>
+<br>
+{{ input_drop_here }}
+==
+~~~~
+
+# JSXGraph fields
+
+They require the template `mathjsxgraph.pl` to be loaded, the first line of `exercise.pl` should thus be 
+
+~~~~
+extends = /template/mathjsxgraph.pl
+~~~~
+
+Moreover, the plots are generated using the `sympy.plot` package, hence the `before`tag of `exercise.pl` should contain the line 
+~~~~
+from sympy.plotting import plot
+~~~~
+
+Unlike the other template tags, the template tags for plots are automaticaly generated from sympy plots. They are not designed to return some user input, only to display a plot. For instance, assume the `before`tag of `exercise.pl` looks like this:
+~~~~
+before==
+from sympy.plotting import plot
+x = symbols('x')
+graph_1 = plot(x**2,(x,-2, 2))
+graph_2 = plot(sin(x),(x,-2, 2))
+==
+~~~~
+
+then the plots can be inserted in the tags `text`or `form` of `exercise.pl`as follows
+~~~~
+text== 
+which of these function plot do you find prettier ?
+<br>
+<span style="width:300px;">{{ graphe_1 | safe }}</span>
+<span style="width:300px;">{{ graphe_2 | safe }}</span>
+== 
+~~~~
+
+Another possible use of plots is as the `display` field of a drag element. Such a field may be any `html` content, but cannot be a template. Therefore we provide a function which returns the `html`string corresponding to the plot, namely `render_plot(arg)`, where `arg`is a plot. For example:
+
+~~~~
+before==
+from sympy.plotting import plot
+x = symbols('x')
+graph_1 = plot(x**2,(x,-2, 2))
+graph_2 = plot(sin(x),(x,-2, 2))
+
+html_graph_1 = render_plot(graph_1)
+html_graph_2 = render_plot(graph_2)
+
+style = 'width: 300px; height: 200px'
+
+drag_tags = [
+    {'name':'graph_1', 'display':html_graph_1, 'style': style},
+    {'name':'graph_2', 'display':html_graph_2, 'style': style}
+]
+drop_tags = [
+  {'name':'here', 'display':'drop here', 'style':style}
+]
+==
+
+text== 
+Drop the function plot you find prettier in the designated area.
+
+Function plots:
+<br>
+{{ input_drag_graph_1 }} {{ input_drag_graph_2 }}
+<br>
+<br>
+{{ input_drop_here }}
+==
