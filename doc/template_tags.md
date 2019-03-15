@@ -88,7 +88,6 @@ resizable_matrix_tags = [
 
 Resizable matrices are web page elements  consisting  of an array of `html` input fields surrounded by brackets. Moreover a hand tool allows to resize the array. They are used when a matrix is required as input from the user, but he also needs to set the right size for the matrix. 
 
-## ICI ICI ICI 
 In our implementation of resizable matrices:
   - The initial size of the matrix is 2 by 2. For the moment this is not parametrizable, nor are the minimum number of rows and columns.
   - The fields `max_rows` and `max_cols` specify to which dimensions the matrix is allowed to grow. The value of `max_rows` defaults to 5, while the value of `max_cols` defaults to that of `max_rows` if the latter is specified, and 5 otherwise.
