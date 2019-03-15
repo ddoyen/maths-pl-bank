@@ -5,7 +5,7 @@
 Useful links :
  - `emojis` to copy-paste for use in `html` strings or templates : https://coolsymbol.com/emojis/emoji-for-copy-and-paste.html
 
- - `css`style properties : https://www.w3schools.com/cssref/
+ - `css` style properties : https://www.w3schools.com/cssref/
  
  - `html color` names : https://www.w3schools.com/colors/colors_names.asp
 
@@ -13,7 +13,7 @@ Useful links :
  
  - `sympy` in general (and matrices in particular) : https://docs.sympy.org/latest/tutorial/index.html
  
- - `sympy plot` : https://docs.sympy.org/latest/tutorial/index.html
+ - `sympy plot` : https://docs.sympy.org/latest/modules/plotting.html
  
 
 
@@ -314,62 +314,88 @@ extends = /template/mathjsxgraph.pl
 
 `JSXGraph` is a javascript-based library for dynamical geometry, i.e. geometrical constructions which can be modified by the user through interaction with his mouse or trackpad. 
 
+The javascript code for the construction is specified in the tag `jsxgraph_script`. An optional tag `jsxgraph_capture` allows to specify a list of names of javascript functions defined in `jsxgraph_script` with no arguments. 
 
-Moreover, the plots are generated using the `sympy.plot` package, hence the `before`tag of `exercise.pl` should contain the line 
-~~~~
-from sympy.plotting import plot
-~~~~
-
-Unlike the other template tags, the template tags for plots are automaticaly generated from sympy plots. They are not designed to return some user input, only to display a plot. For instance, assume the `before`tag of `exercise.pl` looks like this:
-~~~~
-before==
-from sympy.plotting import plot
-x = symbols('x')
-graph_1 = plot(x**2,(x,-2, 2))
-graph_2 = plot(sin(x),(x,-2, 2))
-==
-~~~~
-
-then the plots can be inserted in the tags `text`or `form` of `exercise.pl`as follows
-~~~~
-text== 
-which of these function plot do you find prettier ?
-<br>
-<span style="width:300px;">{{ graphe_1 | safe }}</span>
-<span style="width:300px;">{{ graphe_2 | safe }}</span>
-== 
-~~~~
-
-Another possible use of plots is as the `display` field of a drag element. Such a field may be any `html` content, but cannot be a template. Therefore we provide a function which returns the `html`string corresponding to the plot, namely `render_plot(arg)`, where `arg`is a plot. For example:
+These functions are used to return user input, as in the following example where:
+- Random coordinates *x* and *y* are generated in the  `before` tag.
+- The `javascript` code in `jsxgraph_script` initializes a drawing board, and creates a point *P* with coordinates *x* and *y* in the board, as well as a circle *A*.
+- The `javascript` code in `jsxgraph_script` defines the function `isInA()` whose value is `True` or `False` according to wether the point *P* is in the circle *A* or not.
+- The tag `jsxgraph_capture` indicates that the value of `isInA()` will be captured upon validation by the user. 
+Note that the tag `jsxgraph_script` is a template, i.e. may contain tags ``{{ name }}``, where `name`is the name of a variable defined before, but also other tags with the `jinja2` syntax. 
 
 ~~~~
-before==
-from sympy.plotting import plot
-x = symbols('x')
-graph_1 = plot(x**2,(x,-2, 2))
-graph_2 = plot(sin(x),(x,-2, 2))
-
-html_graph_1 = render_plot(graph_1)
-html_graph_2 = render_plot(graph_2)
-
-style = 'width: 300px; height: 200px'
-
-drag_tags = [
-    {'name':'graph_1', 'display':html_graph_1, 'style': style},
-    {'name':'graph_2', 'display':html_graph_2, 'style': style}
-]
-drop_tags = [
-  {'name':'here', 'display':'drop here', 'style':style}
-]
+before ==
+x = rd.uniform(-4,4)
+y = rd.uniform(-4,4)
 ==
 
-text== 
-Drop the function plot you find prettier in the designated area.
+jsxgraph_script ==
 
-Function plots:
-<br>
-{{ input_drag_graph_1 }} {{ input_drag_graph_2 }}
-<br>
-<br>
-{{ input_drop_here }}
+var jxg_board = JXG.JSXGraph.initBoard(
+    'jxg_container', 
+    {
+        boundingbox:[-5, 5, 5, -5],
+        axis:false,
+        grid:false,
+        showCopyright:false,
+        showNavigation:false
+    }
+);
+var P = jxg_board.create(
+    'point',
+    [{{ x }}, {{ y }}],
+    {
+        name:'P',
+        color:'blue'
+    }
+);
+
+var A = jxg_board.create(
+    'circle',
+    [[-2,0],[0,0]],
+    {
+        name:'A',
+        strokeColor:'pink',
+        label:{strokeColor:'pink'},
+        fixed:true,
+        fillColor:'lightpink',
+        hasInnerPoints: true,
+        highlight: false,
+        opacity: 0.5,
+        withLabel: true
+    }
+);
+
+function isInA(){
+/* the coordinates of P need to be translated to screen coordinates, which 
+is apparently what the method hasPoint(x,y) needs as (x,y). */
+    var c = new JXG.Coords(JXG.COORDS_BY_USER, [P.X(), P.Y()], jxg_board);
+    return A.hasPoint(c.scrCoords[1], c.scrCoords[2]);
+}
 ==
+
+jsxgraph_capture = ["isInA"]
+~~~~
+
+The `jsxgraph`board is inserted in the `text` `form`tag of `exercise.pl` using the template tag `{{ jsx_graph | safe }}`. The  `safe` filter for the tags is needed to prevent escaping of `html` content, as people familiar with  `jinja2` templates know.
+
+After user validation, the value of `isInA()` is stored in `answer['jsxgraph_isInA']`. 
+
+Therefore the rest of the code for `exercise.pl` could be  as follows:
+
+~~~~
+text ==
+In the figure below move the point $%P%$ inside region $%A%$.
+==
+
+form ==
+{{ jsxgraph | safe }}
+==
+
+evaluator ==
+if (answer['jsxgraph_isInA'] == True):
+    score = 100
+else : 
+    score = 0
+==
+~~~~
