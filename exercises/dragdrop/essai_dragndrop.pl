@@ -8,7 +8,7 @@ before ==
 
 style = 'width: 3em; height: 2em'
 drag_tags = [
-    {'name':'in', 'display':'$$\in$$', 'style': style},
+    {'name':'in', 'display':'$$\in$$', 'style':style},
     {'name':'subset', 'display':'$$\subset$$', 'style':style},
     {'name':'maman', 'display':'😍', 'style':style}]
 drop_tags = [{'name':'in', 'display':'', 'style':style}, 
@@ -44,6 +44,9 @@ else :
 solution = ''
 feedback = ''
 ==
+
+
+
 
 
 

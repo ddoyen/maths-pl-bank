@@ -2,6 +2,27 @@
 # coding: utf-8
 
 import sys, json, jsonpickle
+from jinja2 import Template
+
+def build_form(template_form,dic):
+    dinput=dic['input']
+    script=""
+    links=""
+    contextform={}
+    for name,config in dinput.items():
+        type=config['type']
+        context = {**config,**dic,'name':name}
+        contextform['input_'+name]=Template(dic[type+'_container']).render(context)
+        script=script+'\n'+Template(dic[type+'_script']).render(context)
+        links=links+dic[type+'_links']
+    form=links
+    form+=Template(template_form).render(contextform)
+    form+="""
+                <script>
+                {}
+                </script>
+                """.format(script)
+    return form
 
 
 class StopBeforeExec(Exception):
@@ -26,20 +47,6 @@ if __name__ == "__main__":
     
     with open(input_json, "r") as f:
         dic = json.load(f)
-
-    dic['attempt']=0
-    
-    dic['form0']=dic['form']
-
-    dic['form']+="\n <div style='width:100%;height:200px;'></div>"
-
-
-    if 'style' in dic:
-        dic['form']+="""
-            <style>
-            {}
-            </style>
-            """.format(dic['style'])
     
     if 'before' in dic:
         glob = {}
@@ -60,21 +67,28 @@ if __name__ == "__main__":
                + "See documentation related to this builder."),
               file = sys.stderr)
         sys.exit(1)
-    
-    if 'links' in dic:
-        dic['form']+=dic['links']
 
-    if 'script' in dic:
+    dic['nbattempt']=0
+
+    dic['inputmode'] = "initial"    
+    
+    dic['form0']=dic['form']+"\n <div style='width:100%;height:200px;'></div>"
+
+    dic['form']=build_form(dic['form0'],dic)
+
+    if 'pagestyle' in dic:
         dic['form']+="""
-            <script>
+            <style>
             {}
-            </script>
-            """.format(dic['script'])
+            </style>
+            """.format(dic['pagestyle'])
 
     with open(output_json, "w+") as f:
         f.write(jsonpickle.encode(dic, unpicklable=False))
     
     sys.exit(0)
+
+
 
 
 

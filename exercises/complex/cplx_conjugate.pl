@@ -14,9 +14,16 @@ sol=conjugate(z)
 
 text = Quel est le conjugué du nombre complexe $%z ={{latexz}}%$ ?
 
+form ==
+{{input_1 | safe}}
+==
+
+input_tag.1.type = mathexpr
+
 evaluator ==
 score,numerror,texterror=ans_complex(answer['1'],sol,imaginary_unit)
 ==
+
 
 
 

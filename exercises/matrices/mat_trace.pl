@@ -21,11 +21,13 @@ On considère la matrice $$ A= {{latexA}}. $$ Calculer la trace de cette matrice
 
 evaluator ==
 score,_,feedback=ans_number(answer['1'],sol)
+feedback=answer
 ==
 
 solution ==
 La trace de $$A$$ vaut {{latexsol}} .
 ==
+
 
 
 

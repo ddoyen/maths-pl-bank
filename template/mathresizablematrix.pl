@@ -26,7 +26,7 @@ def render_resizable_matrix_tag(dic):
 	if 'max_cols' in dic:
 	    context['max_cols'] = dic['max_cols']
 	else: 
-		context['max_cols'] = 5
+		context['max_cols'] = context['max_rows']
 
 	if 'cell_width' in dic:
 	    context['cell_width'] = dic['cell_width']
@@ -151,6 +151,7 @@ style==
 text==
 
 ==
+
 
 
 

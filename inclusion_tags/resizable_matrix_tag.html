@@ -75,8 +75,21 @@
         var num_cols = Math.min({{ max_cols }},Math.floor(hsize/cell_width));
         $( "#form_resizable_matrix_{{ name }}_rows" ).val(num_rows);
         $( "#form_resizable_matrix_{{ name }}_cols" ).val(num_cols);
-        });
+        for(var i = 0; i < {{ max_rows }}; i++){
+            for(var j = 0; j < {{ max_cols }}; j++){
+                if ((i < num_rows) && (j < num_cols)) {
+                    document.getElementById('form_resizable_matrix_{{ name }}_'+i+j).tabIndex = i*num_cols+j+1;
+                }
+                else {
+                    document.getElementById('form_resizable_matrix_{{ name }}_'+i+j).tabIndex = -1;
+                }
+            }
+        }
+    });
+    $( "#resizable_matrix_{{ name }}_container" ).resize();
 </script>
+
+
 
 
 

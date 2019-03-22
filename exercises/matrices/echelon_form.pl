@@ -6,12 +6,13 @@ lang = fr
 
 
 before ==
+from math import ceil
 
 # randint(4,7) est un entier aléatoire choisi parmi 4, 5, 6, 7
 n = randint(4,7)
 m = randint(4,7)
 
-r = randint(math.ceil(min(n,m)/2), min(n,m))
+r = randint(ceil(min(n,m)/2), min(n,m))
 t = randint(0,2)
 
 # range(n) = [0,1,.., n-1]. sample(liste, r) renvoie une liste de 'r' éléments choisis au pif dans la liste, et pas dans l'ordre, sans répétition.
@@ -66,4 +67,5 @@ else :
     texterror = ""
 
 feedback=fb.msg_analysis(score,texterror,lang)
-=
+==
+

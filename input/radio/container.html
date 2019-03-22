@@ -1,0 +1,20 @@
+{% if inputmode == 'active' %}
+{% for txt in choices %}
+<div>
+  <input type="checkbox" id="form_{{ name }}" name="form_{{ name }}" value="{{ loop.index0 }}">
+  <label for="form_{{ name }}"> {{ txt }} </label>
+</div>
+{% endfor %}
+{% endif %}
+
+{% if inputmode == 'correction' %}
+{% for txt in choices %}
+<div>
+  <input type="checkbox" id="form_{{ name }}" name="form_{{ name }}" value="{{ loop.index0 }}">
+  <label for="form_{{ name }}" class="rightchoice"> {{ txt }} </label>
+</div>
+{% endfor %}
+{% endif %}
+
+" contextinput['choices']=contextinput['choices'].split("\n")"
+

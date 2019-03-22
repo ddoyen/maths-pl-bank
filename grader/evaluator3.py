@@ -5,6 +5,28 @@ import sys, json, jsonpickle, time
 
 from sandboxio import output, get_context, get_answers
 
+from jinja2 import Template
+
+def build_form(template_form,dic):
+    dinput=dic['input']
+    script=""
+    links=""
+    contextform={}
+    for name,config in dinput.items():
+        type=config['type']
+        context = {**config,**dic,'name':name}
+        contextform['input_'+name]=Template(dic[type+'_container']).render(context)
+        script=script+'\n'+Template(dic[type+'_script']).render(context)
+        links=links+dic[type+'_links']
+    form=links
+    form+=Template(template_form).render(contextform)
+    form+="""
+                <script>
+                {}
+                </script>
+                """.format(script)
+    return form
+
 def format_analysis(msg,text,n,lang):
     dcls={'warning':'alert-info','retry':'alert-warning','fail':'alert-danger','success':'alert-success'}
     ditext={'en':{'warning':'Warning !','retry':'Try again !','fail':'Fail.','success':'Good.'},
@@ -78,11 +100,6 @@ if __name__ == "__main__":
     else:
         maxattempt=1
 
-    if 'nbattempt' in dic:
-        nbattempt=int(dic['nbattempt']) 
-    else:
-        nbattempt=0
-    
     if 'feedback' in dic:
         feedback= dic['feedback']
     else:
@@ -92,6 +109,17 @@ if __name__ == "__main__":
         lang= dic['lang']
     else:
         lang="fr"
+
+    
+    if score>-1:
+        dic['nbattempt'] +=1
+
+    nbattempt=dic['nbattempt']
+
+    if (dic['nbattempt'] < int(dic['maxattempt'])) and score<100:
+        dic['inputmode'] = "retry"
+    else:
+        dic['inputmode'] = "final"
 
     if score==100:
         format_feedback=format_analysis('success',feedback,0,lang)
@@ -104,34 +132,14 @@ if __name__ == "__main__":
             format_feedback=format_analysis('fail',feedback,0,lang)
 
 
-    dic['form']=dic['form0']+"\n <div style='width:100%;height:200px;'></div>"
+    dic['form']=build_form(dic['form0'],dic)
 
-    if 'style' in dic:
+    if 'pagestyle' in dic:
         dic['form']+="""
             <style>
             {}
             </style>
-            """.format(dic['style'])
+            """.format(dic['pagestyle'])
 
-    if 'links' in dic:
-        dic['form']+=dic['links']
-
-    if 'script' in dic:
-        dic['form']+="""
-            <script>
-            {}
-            </script>
-            """.format(dic['script']) 
 
     output(score,format_feedback,dic)
-
-
-
-
-
-
-
-
-
-
-

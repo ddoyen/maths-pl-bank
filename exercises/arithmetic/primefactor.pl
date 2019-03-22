@@ -1,10 +1,8 @@
-extends = /template/mathexpr2.pl
+extends = /template/mathexpr.pl
 
 title = Décomposition en facteurs premiers
 
 lang = fr
-
-virtualKeyboards = elementary
 
 text ==
 Décomposer $% {{n}} %$ en produit de facteurs premiers.
@@ -18,19 +16,23 @@ textError %=
 
 before ==
 while True:
-    n=randint(10,100)
+    n=randint(10,150)
     dicfactors=factorint(n)
     if sum(list(dicfactors.values()))>2:
         break
-mathexpr_tags = [{'name':'1'},{'name':'2'}]
 ==
 
 form ==
-{{input_mathexpr_1}}
-{{input_mathexpr_2}}
+$%\large x %$ = {{input_1 | safe}}
 ==
 
+input.1.type = mathexpr
+input.1.style = width:40%
+input.1.virtualKeyboards =elementary
+input.1.virtualKeyboardMode = manual
+
 evaluator==
+
 def list2dicfactors(listfactors):
     dicfactors={}
     for f in listfactors:
@@ -50,6 +52,7 @@ def list2dicfactors(listfactors):
         else:
             dicfactors[p]=k
     return dicfactors
+
 try:
     ans=str2expr(answer['1'])
     if type(ans)==sp.Mul:
@@ -68,5 +71,6 @@ try:
 except:
     score=-1
     feedback=textError['1']
+
 ==
 

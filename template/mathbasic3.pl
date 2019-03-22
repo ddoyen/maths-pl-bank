@@ -1,8 +1,10 @@
 @ /utils/sandboxio.py
 @ /utils/plrandom.py [plrandom.py]
 @ /utils/utilsmath.py [utilsmath.py]
-@ /builder/before2.py [builder.py]
-@ /grader/evaluator2.py [grader.py]
+@ /builder/before3.py [builder.py]
+@ /grader/evaluator3.py [grader.py]
+
+
 
 title = Title
 
@@ -10,6 +12,7 @@ headbefore ==
 from plrandom import rd
 rd.seed(seed)
 from sympy import sqrt,ln,log,exp,sin,cos,tan
+from sympy import pi
 from sympy import isprime,factorint
 from sympy import Intersection
 from sympy import symbols
@@ -22,9 +25,8 @@ if 'latexparam' in locals():
     LatexPrinter._settings.update(eval(latexparam))
 ==
 
-before =
-
 footerbefore ==
+# Conversion of Sympy objects into strings
 _strsympyvar={}
 for _namevar in list(locals().keys()):
     if isinstance(locals()[_namevar],(Basic,Matrix)):
@@ -45,15 +47,3 @@ for _namevar in list(_strsympyvar.keys()):
     with evaluate(False):
         locals()[_namevar]=sympify(_strsympyvar[_namevar])
 ==
-
-evaluator =
-
-
-
-
-
-
-
-
-
-
