@@ -10,11 +10,13 @@ def build_form(template_form,dic):
     links=""
     contextform={}
     for name,config in dinput.items():
-        type=config['type']
+        input_type=config['type']
+        if input_type+'_build' in dic:
+            exec(dic[input_type+'_build'])
         context = {**config,**dic,'name':name}
-        contextform['input_'+name]=Template(dic[type+'_container']).render(context)
-        script=script+'\n'+Template(dic[type+'_script']).render(context)
-        links=links+dic[type+'_links']
+        contextform['input_'+name]=Template(dic[input_type+'_container']).render(context)
+        script=script+'\n'+Template(dic[input_type+'_script']).render(context)
+        links=links+dic[input_type+'_links']
     form=links
     form+=Template(template_form).render(contextform)
     form+="""
@@ -68,6 +70,9 @@ if __name__ == "__main__":
               file = sys.stderr)
         sys.exit(1)
 
+    if 'maxattempt' not in dic:
+        dic['maxattempt']=1
+
     dic['nbattempt']=0
 
     dic['inputmode'] = "initial"    
@@ -87,6 +92,7 @@ if __name__ == "__main__":
         f.write(jsonpickle.encode(dic, unpicklable=False))
     
     sys.exit(0)
+
 
 
 

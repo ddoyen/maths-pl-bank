@@ -30,12 +30,17 @@ def build_form(template_form,dic):
 def format_analysis(msg,text,n,lang):
     dcls={'warning':'alert-info','retry':'alert-warning','fail':'alert-danger','success':'alert-success'}
     ditext={'en':{'warning':'Warning !','retry':'Try again !','fail':'Fail.','success':'Good.'},
-        'fr':{'warning':'Attention !','retry':'Essaie encore !','fail':'Mauvaise réponse.','success':'Bonne réponse.'}}
+        'fr':{'warning':'Attention !','retry':'Mauvaise réponse.','fail':'Mauvaise réponse.','success':'Bonne réponse.'}}
     cls=dcls[msg]
     itext=ditext[lang][msg]
     if msg=='warning' or msg=='retry':
-        format_text="""<div class="alert {}">
+        if n>1:
+            format_text="""<div class="alert {}">
   <strong>{}</strong> {} <br> Il reste {} tentatives.</div>""".format(cls,itext,text,n)
+        else:
+            format_text="""<div class="alert {}">
+  <strong>{}</strong> {} <br> Il reste 1 tentative.</div>""".format(cls,itext,text)
+
     else:
         format_text="""<div class="alert {}">
   <strong>{}</strong> {}</div>""".format(cls,itext,text)
@@ -143,3 +148,4 @@ if __name__ == "__main__":
 
 
     output(score,format_feedback,dic)
+

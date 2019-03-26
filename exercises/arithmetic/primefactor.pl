@@ -1,4 +1,4 @@
-extends = /template/mathexpr.pl
+extends = /template/input/mathexpr.pl
 
 title = Décomposition en facteurs premiers
 
@@ -23,12 +23,12 @@ while True:
 ==
 
 form ==
-$%\large x %$ = {{input_1 | safe}}
+{{input_1 | safe}}
 ==
 
 input.1.type = mathexpr
-input.1.style = width:40%
-input.1.virtualKeyboards =elementary
+input.1.style = width:100%
+input.1.virtualKeyboards = elementary
 input.1.virtualKeyboardMode = manual
 
 evaluator==
@@ -73,4 +73,6 @@ except:
     feedback=textError['1']
 
 ==
+
+
 

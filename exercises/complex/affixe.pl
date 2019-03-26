@@ -1,8 +1,12 @@
-extends = /template/mathjxg.pl
+extends = /template/input/mathjsxgraph.pl
 
 title = Affixe d'un nombre complexe
 
 lang = fr
+
+maxattempt = 1
+
+settings.allow_reroll = true
 
 before ==
 a=randint(-5,5)
@@ -15,7 +19,7 @@ text ==
 Placer le point $% M %$ d'affixe $%{{ latexz }}%$ dans le plan ci-dessous.
 ==
 
-input.1.attributes = {boundingbox:[-6,6,6,-6],axis:false,grid:false,showNavigation:false}
+input.1.attributes = {boundingbox:[-6,6,6,-6],axis:true,grid:true,showNavigation:false}
 
 input.1.script.main ==
 var grid = board.create('grid',[],{gridX:1,gridY:1});
@@ -39,7 +43,7 @@ function down(e) {
 board.on('down',down)
 ==
 
-input.1.script.correction ==
+input.1.script.solution ==
 var Msol = board.create('point',[{{a}},{{b}}],{size:2,name:'M',color:'green'});
 ==
 
@@ -53,5 +57,7 @@ else:
      score=0
 feedback=""
 ==
+
+
 
 

@@ -1,4 +1,4 @@
-extends = /template/mathexpr.pl
+extends = /template/input/mathexpr.pl
 
 title = Transformation d'écritures (racine carrée) 1
 
@@ -10,7 +10,7 @@ before ==
 from sympy.ntheory.factor_ import core
 p,b=1,1
 while (b==p) or (b==1):
-    p=randint(50,300)
+    p=randint(50,200)
     b=core(p)
 a=int(sqrt(p/b))
 sol=a*sqrt(b)
@@ -28,6 +28,7 @@ else:
     score=0
 feedback="" 
 ==
+
 
 
 

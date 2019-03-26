@@ -1,4 +1,4 @@
-extends = /template/mathjxg.pl
+extends = /template/input/mathjsxgraph.pl
 
 title = Tracer une droite
 
@@ -27,19 +27,24 @@ var B = board.create('point',[-1,-1],{size:2,name:'B',color:'red',withLabel:fals
 var line = board.create('line',[A,B]);
 ==
 
+input.1.script.solution ==
+var linesol = board.create('line',[[0,{{b}}],[1,{{a}}+{{b}}]],{color:'green'});
+==
+
 
 evaluator ==
 xA=float(answer['A_x'])
 yA=float(answer['A_y'])
 xB=float(answer['B_x'])
 yB=float(answer['B_y'])
+bans=yA-(yA-yB)/(xA-xB)*xA 
 from math import atan2,pi
-if abs(abs(atan2(yA-yB,xA-xB))-theta)<0.1:
+if abs(abs(atan2(yA-yB,xA-xB))-theta)<0.1 and abs(b-bans)<0.1:
      score=100
 else:
      score=0
-feedback=theta, atan2(yA-yB,xA-xB)
 ==
+
 
 
 

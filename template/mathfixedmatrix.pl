@@ -142,69 +142,10 @@ else:
         answer[matrix_name] = temp_matrix
 ==
 
-
-style==
-.matrix-input {
-	border : none;
-	border-radius:4px;
-	text-align: center;
-	font-style: italic;
-	font-size: 12pt;
-	color:black;
-	background-color: LightGrey;
-	z-index:10;
-}
-
-.matrix-input:disabled {
-    background-color: inherit;
-}
-
-.absolute-center{
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-.matrix{
-    display:inline-block;
-    position: relative;
-    margin: 5px;
-    vertical-align: middle;
-}
-.matrix:before, .matrix:after {
-    content: "";
-    position: absolute;
-    top: 0;
-    border: 2px solid #000;
-    width: 6px;
-    height: 100%;
-}
-.matrix:before {
-    left: -6px;
-    border-right: 0;
-}
-.matrix:after {
-    right: -6px;
-    border-left: 0;
-}
-    
-.matrix-container {
-    display: inline-block;
-    overflow: hidden;
-}
-.matrix-table {
-    table-layout:fixed;
-}
-.matrix-cell {
-    margin:0;
-    position:relative;
-}
-==
-
 text==
 
 ==
+
 
 
 

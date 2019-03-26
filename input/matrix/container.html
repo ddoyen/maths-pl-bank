@@ -1,0 +1,25 @@
+<div class ='matrix' >
+    <div class='matrix-container' id='fixed_matrix_{{ name }}_container'>
+    <table class = 'matrix-table' style = 'width: calc({{ num_cols }}*{{ cell_width }});
+        height: calc({{ num_rows }}*{{ cell_height }})'>
+        {% for line in matrix %}
+        <tr>
+            {% for element in line %}
+            <td class='matrix-cell' 
+                style='height: {{ cell_height }}; width: {{ cell_width }}'>
+                <!-- tabindex makes element inaccessible by tabs, important otherwise hidden cells may become visible -->
+                <input 
+                    class='matrix-input absolute-center' 
+                    id ='form_fixed_matrix_{{ name }}_{{ element.0 }}' 
+                    style='{{ input_style }}'
+                    value='{{ element.1 }}'
+                 />
+            </td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+    </div>
+</div>
+
+

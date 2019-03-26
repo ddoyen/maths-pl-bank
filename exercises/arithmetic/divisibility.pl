@@ -1,20 +1,31 @@
-extends = /template/mathbasic2.pl
+extends = /template/input/mathradio.pl
 
 title = Relation de divisibilité
 
 lang = fr
 
 before ==
-angle=randitem([Rational(1,2),1,Rational(3,2),Rational(1,4),Rational(3,4),Rational(5,4)])*sp.pi
-valangle=float(angle.evalf())
-latexangle=latex(angle)
-a=4
-b=2
-numsol=0
+if randint(0,1)==0:
+    while True:
+        a,b=list_randint_norep(2,2,30)
+        if (a%b==0 or b%a==0):
+            break
+    if a%b==0:
+        numsol=0
+    else:
+        numsol=1
+else:
+    while True:
+        a,b=list_randint_norep(2,2,30)
+        if (a%b!=0 and b%a!=0):
+            break
+    numsol=2
 ==
 
-text ==
-Déplacer le point $% M %$ de sorte que l'angle $% (\overrightarrow{OA},\overrightarrow{OM}) %$ ait une mesure égale à $% \displaystyle {{ latexangle }}. %$
+text == 
+Soit $% \ll %$ la relation d'ordre sur $% \mathbb{N}^* %$ définie par : $% p \ll q %$ si $%p%$ divise $%q%$.
+
+Comment se comparent les entiers $%{{a}}%$ et $%{{b}}%$ par rapport à cette relation d'ordre.
 ==
 
 form ==
@@ -24,15 +35,19 @@ form ==
 input.1.type = radio
 
 input.1.choices ==
-{{a}} est divisible par {{b}}
-{{b}} est divisible par {{a}}
-Pas de relation entre {{a}} et {{b}}
+$% {{b}}  \ll {{a}} %$ 
+$% {{a}}  \ll {{b}} %$ 
+$%{{a}}%$ et $%{{b}}%$ ne sont pas comparables
 ==
 
 input.1.numsol = {{numsol}}
 
 evaluator ==
-score=100
-feedback=answer
+if "1_"+str(numsol) in answer:
+    score=100
+else:
+    score=0
 ==
+
+
 

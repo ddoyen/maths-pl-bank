@@ -1,0 +1,39 @@
+<style>
+	.target, .source, .drag-display {
+	border : 2px solid Black;
+	border-radius:6px;
+	color:black;
+	z-index:10;
+	}
+
+    div.target, div.source { /* les divs qui contiennent les champs drag-drop */
+    display: inline-flex;
+    border:none;
+	margin : 6px;
+	width : 3em;
+	height : 2em;
+    vertical-align:middle;
+	text-align:center;
+	justify-content: center;
+	align-items: center;
+}
+div.target  {
+	background:AntiqueWhite;
+}
+div.source  {
+	background:Burlywood;
+}
+.drag-display {
+	display:flex;
+    position:absolute;
+	background:inherit;
+	height:inherit;
+	width:inherit;
+	justify-content: center;
+	align-items: center;
+	text-align:center;
+	font-size: 1em;
+	overflow:hidden;
+}
+
+</style>

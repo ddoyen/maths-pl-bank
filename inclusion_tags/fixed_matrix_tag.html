@@ -1,8 +1,66 @@
-<!--- jquery / jquery ui -->
-  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<style>
+.matrix-input {
+	border : none;
+	border-radius:4px;
+	text-align: center;
+	font-style: italic;
+	font-size: 12pt;
+	color:black;
+	background-color: LightGrey;
+	z-index:10;
+}
 
+.matrix-input:disabled {
+    background-color: inherit;
+}
+
+.absolute-center{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.phantom {
+  opacity : 0;
+  z-index: 0;
+}
+
+.matrix{
+    display:inline-block;
+    position: relative;
+    margin: 5px;
+    vertical-align: middle;
+}
+.matrix:before, .matrix:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    border: 2px solid #000;
+    width: 6px;
+    height: 100%;
+}
+.matrix:before {
+    left: -6px;
+    border-right: 0;
+}
+.matrix:after {
+    right: -6px;
+    border-left: 0;
+}
+    
+.matrix-container {
+    display: inline-block;
+    overflow: hidden;
+}
+.matrix-table {
+    table-layout:fixed;
+}
+.matrix-cell {
+    margin:0;
+    position:relative;
+}
+</style>
 
 <div class ='matrix'>
     <div class='matrix-container' id='fixed_matrix_{{ name }}_container'>
@@ -24,6 +82,12 @@
                     disabled
                     {% endif %}
                 />
+                <!-- Phantom prevents animations from disrupting page layout -->
+                <input 
+                    class='matrix-input absolute-center phantom' 
+                    style='{{ input_style }}'
+                    value='{{ element.1 }}'
+                />                
             </td>
             {% endfor %}
         </tr>
@@ -32,5 +96,28 @@
     </div>
 </div>
 
+<script>
+  (function ( $ ) {
+      $.fn.styling = function(style) {
+        var color = '';
+        var object = this;
+        if (style === 'wrong_answer') color = "LightPink";
+        if (style === 'good_answer') color = "LightGreen";
+        this.animate({width: 'toggle'},function(){
+          object.css("background-color", color)
+          object.animate({width: 'toggle'});
+        });
+
+        return this;
+      };
+  }( jQuery ));
+
+  function onAfterSubmitPL() {
+    const ok_answer = JSON.parse($('#myid').val());
+    for (var i = 0; i < ok_answer.length; i++){
+        $(document.getElementById(ok_answer[i][0])).styling(ok_answer[i][1]);
+    }
+  }
+</script>
 
 

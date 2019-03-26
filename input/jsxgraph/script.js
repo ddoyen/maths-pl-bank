@@ -28,7 +28,7 @@ for (obj of board.objectsList){
 
 {{boardname}}.fullUpdate();
 
-{{ script.correction | safe }}
+{{ script.solution | safe }}
 
 {{boardname}}.removeEventHandlers();
 
@@ -65,6 +65,7 @@ function jxg_{{name}}_updateInput(){
 jxg_{{name}}_updateInput();
 
 {{boardname}}.on('update',jxg_{{name}}_updateInput);
+
 
 
 

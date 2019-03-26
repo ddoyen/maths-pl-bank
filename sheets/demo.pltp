@@ -1,7 +1,15 @@
-title = demo
+title = Mathématiques
 
 introduction = demo
 
-@ /exercises/arithmetic/prime_factor.pl
+@ /exercises/arithmetic/primefactor.pl
+@ /exercises/sqrt/transf_sqrt1.pl
+@ /exercises/functions/defset/ln1.pl
+@ /exercises/geometry/line.pl
+@ /exercises/complex/affixe.pl
+
+@ /exercises/trigonometry/unitcircle.pl
+
+
 
 

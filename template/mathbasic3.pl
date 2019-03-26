@@ -4,7 +4,7 @@
 @ /builder/before3.py [builder.py]
 @ /grader/evaluator3.py [grader.py]
 
-
+settings.allow_reroll = true
 
 title = Title
 
@@ -47,3 +47,4 @@ for _namevar in list(_strsympyvar.keys()):
     with evaluate(False):
         locals()[_namevar]=sympify(_strsympyvar[_namevar])
 ==
+
